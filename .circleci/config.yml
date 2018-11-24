@@ -8,7 +8,9 @@ jobs:
       - run: pip install awscli
       # TODO run some smoke tests ?
       # creating distribution of website
-      # deploy it to s3
-      - run: aws s3 sync src/ $S3_BUCKET_NAME
-      # invalidate the whole cloudfront distribution
-      - run: aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
+      # deploy it to both s3
+      - run: aws s3 sync src/ $S3_BUCKET_NAME1
+      - run: aws s3 sync src/ $S3_BUCKET_NAME2
+      # invalidate both cloudfront distributions
+      - run: aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID1 --paths "/*"
+      - run: aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID2 --paths "/*"
