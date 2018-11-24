@@ -1,0 +1,14 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: library/python:3.7-alpine3.8
+    steps:
+      - checkout
+      - run: pip install awscli
+      # TODO run some smoke tests ?
+      # creating distribution of website
+      # deploy it to s3
+      - run: aws s3 sync src/ $S3_BUCKET_NAME
+      # invalidate the whole cloudfront distribution
+      - run: aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
